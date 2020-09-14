@@ -4,6 +4,7 @@ import Header from './components/Header'
 import AppBody from './components/AppBody'
 import AppBodySkills from './components/AppBodySkills'
 import AppBodyWork from './components/AppBodyWork'
+import {states} from './logic/skillData'
 
 export interface AppComponentState {
   name: string;
@@ -25,7 +26,7 @@ class App extends React.Component<{}, AppComponentState> {
           bodyApp = <AppBody />;
         break;
         case 'skills':
-          bodyApp = <AppBodySkills />;
+          bodyApp = <AppBodySkills {...[states]}/>;
         break;
         case 'work':
           bodyApp = <AppBodyWork />;

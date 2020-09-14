@@ -15,7 +15,7 @@ class Header extends React.Component<{}>{
         return (
             <div className='header-app'>
                 <ul className='header-ul unselectable'>
-                    <li className={this.props[3]==='main'?'active':''} onClick = {this.props[0]}> Главная  </li>
+                    <li className={this.props[3]==='main'?'active':''} onClick = {this.props[0]}> О себе  </li>
                     <li className={this.props[3]==='skills'?'active':''} onClick = {this.props[1]}> Навыки и знания  </li>
                     <li className={this.props[3]==='work'?'active':''} onClick = {this.props[2]}> Место работы  </li>
                 </ul>

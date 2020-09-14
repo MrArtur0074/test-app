@@ -1,17 +1,19 @@
 import React from 'react';
-import './AppBody.css'
+import './AppBody.css';
+import svgImage from '../img/jquery-icon.svg'
+import {Iskill} from '../logic/skillData'
 
 class Skill extends React.Component {
+    public props: Iskill = this.props;
     render() {
+        console.log(this.props);
         return (
             <div className='card'>
-                <div className='employee-nickname'>
-                    <div className='left'> 1 </div>
-                    <div className='left nickname'> 1 </div>
+                <div className='card-img'>
+                    <img src={this.props.src} />
                 </div>
-                <div className='form-attr'> <span className='text-employee'> Телефон: </span> <span> 1 </span> </div>
-                <div className='form-attr'> <span className='text-employee'> E-mail: </span> <span> 1 </span> </div>
-                <div className='form-attr'> <span className='text-employee'> Должность: </span> <span> 1 </span> </div>
+                <div className='form-attr'> <span className='text-card'> {this.props.name} </span></div>
+                <div className='form-attr'> <span className='text-card'> {this.props.title} </span></div>
             </div>
         )
     }
