@@ -29,7 +29,7 @@ class App extends React.Component<{}, AppComponentState> {
           bodyApp = <AppBodySkills {...[states]}/>;
         break;
         case 'work':
-          bodyApp = <AppBodyWork />;
+          bodyApp = <AppBodyWork {...[states]}/>;
         break;
       }
       return (

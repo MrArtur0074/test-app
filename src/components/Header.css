@@ -1,7 +1,8 @@
 .header-app {
-    padding-left: 20px;
     display: flex;
-    background-color: rgb(159, 158, 170);
+    background-color: rgb(50,50,50);
+    color: white;
+    justify-content: center;
 }
 .header-ul {
     display: flex;
@@ -19,9 +20,10 @@
     align-items: center;
     padding-left: 10px;
     padding-right: 10px;
+    transition: all 0.5s ease-in-out;
 }
 .header-ul li:hover {
-    background-color: rgb(194, 193, 201);
+    color: #2EB398;
 }
 .unselectable {
     -webkit-touch-callout: none; /* iOS Safari */

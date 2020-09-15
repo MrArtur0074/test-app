@@ -1,12 +1,10 @@
 import React from 'react';
 import './AppBody.css';
-import svgImage from '../img/jquery-icon.svg'
 import {Iskill} from '../logic/skillData'
 
 class Skill extends React.Component {
     public props: Iskill = this.props;
     render() {
-        console.log(this.props);
         return (
             <div className='card'>
                 <div className='card-img'>
