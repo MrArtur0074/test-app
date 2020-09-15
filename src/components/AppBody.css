@@ -139,12 +139,19 @@
     text-align: center;
     padding-bottom: 10px;
     border-bottom: 4px solid #ffd828;
+    height: 66px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .work-card-title, .work-card-date {
     font-size: 16px;
     line-height: 22px;
     padding: 10px;
     font-family: monospace;
+}
+.work-card-title {
+    border-bottom: 4px solid #89ff28;
 }
 .work-card-add img{
     height: 96px;

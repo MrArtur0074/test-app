@@ -4,7 +4,6 @@ import {Iwork} from '../logic/skillData';
 class WorkCard extends React.Component<{}> {
     public props: Iwork = this.props;
     render() {
-        console.log(this.props.startDate);
         let startDate:string = this._formatDate(this.props.startDate);
         let endDate:string = this._formatDate(this.props.endDate);
         return (
@@ -12,7 +11,7 @@ class WorkCard extends React.Component<{}> {
                 <div className='work-card'>
                     <div className='work-card-name'> {this.props.name} </div>
                     <div className='work-card-title'> {this.props.title} </div>
-                    <div className='work-card-date'> <span>{startDate} - {endDate}</span> </div>
+                    <div className='work-card-date'> <span>С {startDate} по {endDate}</span> </div>
                 </div>
             </div>
         )
