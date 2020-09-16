@@ -1,34 +1,43 @@
 import React from 'react';
 import {Iwork} from '../logic/skillData';
+import imgEdit from '../img/edit.svg';
+import imgDelete from '../img/delete.svg';
+import {IInfoCard} from './ModalEdit';
 
-class WorkCard extends React.Component<{}> {
-    public props: Iwork = this.props;
+interface IWorkCardProps {
+    0: Iwork;
+    1(number:number): void;
+    2: number;
+    3(): void;
+}
+
+class WorkCard extends React.Component<IWorkCardProps> {
+    public props: IWorkCardProps = this.props;
+    constructor(props:IWorkCardProps) {
+        super(props);
+        this.dataToModal = this.dataToModal.bind(this);
+    }
     render() {
-        let startDate:string = this._formatDate(this.props.startDate);
-        let endDate:string = this._formatDate(this.props.endDate);
         return (
             <div>
                 <div className='work-card'>
-                    <div className='work-card-name'> {this.props.name} </div>
-                    <div className='work-card-title'> {this.props.title} </div>
-                    <div className='work-card-date'> <span>С {startDate} по {endDate}</span> </div>
+                    <div className='work-card-body'>
+                        <div className='work-card-name'> {this.props[0].name} </div>
+                        <div className='work-card-title'> {this.props[0].title} </div>
+                        <div className='work-card-date'> <span>С {this.props[0].startDate} по {this.props[0].endDate}</span> </div>
+                    </div>
+                    <div className='work-card-icons'> 
+                        <img className='card-icon' src={imgEdit} onClick={this.dataToModal}/>
+                        <img className='card-icon' src={imgDelete}/>
+                    </div>
                 </div>
             </div>
         )
     }
 
-    // Date to string
-    private _formatDate = (date:Date): string => {
-        var day:number = date.getDate();
-        let dd:string = (day < 10)? '0' + day : '' + day;
-
-        var month:number = date.getMonth();
-        let mm:string = (month < 10)? '0' + month : '' + month;
-
-        var year:number = date.getFullYear();
-        let yy:string = '' + year;
-
-        return dd + '.' + mm + '.' + yy;
+    private dataToModal():void {
+        this.props[1](this.props[2]);
+        this.props[3]();
     }
 }
 

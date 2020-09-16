@@ -5,25 +5,25 @@ import svgImagePhp from '../img/php.svg';
 import svgImageMySql from '../img/mysql.svg';
 import svgImageCss from '../img/css.svg';
 import svgImageReact from '../img/react.svg';
+import {IInfoCard} from '../components/ModalEdit';
 
 export interface Istates {
     skills: Iskill[];
-    works: Iwork[];
 }
 
 export interface Iskill {
-    id: number;
+    id: number | string;
     src: string;
     name: string;
     title?: string;
 }
 
 export interface Iwork {
-    id:number;
+    id:number | string;
     name: string;
     title: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
 }
 
 export let states: Istates = {
@@ -70,35 +70,50 @@ export let states: Istates = {
             name: "React",
             title: ""
         }
-    ],
-    works: [
-        {
-            id: 1,
-            name: "Республиканский экономический лицей интернат(РЭЛИ)",
-            title: "Обучение с 7 по 11 класс.",
-            startDate: new Date("2011-09-01"),
-            endDate: new Date("2015-05-30")
-        },
-        {
-            id: 2,
-            name: "Уфимский Государственный Авиационный Технический Университет(УГАТУ)",
-            title: "Факультет Информатики и Робототехники, специальность «Прикладная информатика» (бакалавриат). Общий средний балл: 4,77.",
-            startDate: new Date("2015-09-01"),
-            endDate: new Date("2019-06-30")
-        },
-        {
-            id: 3,
-            name: "Уфимский Государственный Авиационный Технический Университет(УГАТУ)",
-            title: "Факультет Информатики и Робототехники, специальность «Прикладная информатика» (магистратура)",
-            startDate: new Date("2019-09-01"),
-            endDate: new Date("2021-06-30")
-        },
-        {
-            id: 4,
-            name: "Фриланс",
-            title: "Frontend разработка для приложения HeyGo",
-            startDate: new Date("2019-05-16"),
-            endDate: new Date("2019-08-16")
-        }
     ]
+}
+
+export interface inputErrors {
+    name: boolean;
+    title: boolean;
+    startDate: boolean;
+    endDate: boolean;
+}
+
+export function validate(content:IInfoCard):inputErrors {
+    let errors:inputErrors = {
+        name: false,
+        title: false,
+        startDate: false,
+        endDate: false
+    }
+
+    // Валидация полей
+    errors.name = (!content.name)? true: false;
+    errors.title = (!content.title)? true: false;
+    errors.startDate = (!content.startDate)? true: false;
+    errors.endDate = (!content.endDate)? true: false;
+
+    return errors;
+}
+
+// Дата в строку
+export function pickerData(data:IInfoCard):IInfoCard {
+    let finishData:IInfoCard = {
+        id: data.id,
+        title: data.title,
+        name: data.name,
+        startDate: formateDateString(data.startDate, '-'),
+        endDate: formateDateString(data.endDate, '-')
+    };
+    return finishData;
+}
+
+// Конвертор
+export function formateDateString(dateString:string, sym:string):string {
+    if (!dateString) return '';
+    let finishDate:string = "";
+    let arr = dateString.split(sym);
+    finishDate = (sym === '.')? arr[2] + '-' + arr[1] + '-' + arr[0]: arr[2] + '.' + arr[1] + '.' + arr[0];
+    return finishDate;
 }

@@ -61,6 +61,11 @@
     height: 300px;
     box-shadow: 0 3px #b5cee4, 0 0 16px rgba(174,195,216,.7);
     border-radius: 3px;
+    display: grid;
+    grid-template-rows: 6fr 1fr;
+}
+.work-card-body {
+    overflow-y: auto;
 }
 .card:hover, .work-card:hover {
     background-color: rgb(240, 238, 234);
@@ -160,4 +165,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.card-icon {
+    width: 36px;
+    margin-left: 15px;
+    padding: 5px;
+}
+.card-icon:hover {
+    background-color: brown;
+}
+.work-card-icons {
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
