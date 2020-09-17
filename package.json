@@ -67,9 +67,11 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "concurrently --kill-others \"node scripts/start.js\" \"json-server --watch db.json --port 4000\"",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "rest-api": "json-server --watch db.json --port 4000",
+    "start-react": "node scripts/start.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -151,6 +153,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.10.5",
+    "concurrently": "^5.3.0",
+    "json-server": "^0.16.1",
     "mobx": "^5.15.6",
     "mobx-react": "^6.3.0",
     "mobx-react-devtools": "^6.1.1"

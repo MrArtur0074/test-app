@@ -1,20 +1,20 @@
 import {IInfoCard} from '../components/ModalEdit'
 
-export function changeCard(data:IInfoCard):void {
-    fetch('https://my-json-server.typicode.com/MrArtur0074/json-server/works/', {
-        method: "post",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            id: data.id,
-            name: data.name,
-            title: data.title,
-            startDate: data.startDate,
-            endDate: data.endDate
+export async function changeCard(data:IInfoCard) {
+    try {
+        await fetch('http://localhost:4000/works/' + data.id, {
+            method: "put",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id: data.id,
+                name: data.name,
+                title: data.title,
+                startDate: data.startDate,
+                endDate: data.endDate
+            })
         })
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);
-    })
-    .catch(err => console.log(err))
+    } catch (error) {
+        alert('Возникла ошибка при изменении документа');
+    }
+    
 }

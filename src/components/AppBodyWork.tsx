@@ -30,28 +30,27 @@ class AppBodyWork extends React.Component<IAppBodyWorkProps, IAppBodyWork> {
         this.isModalFalse = this.isModalFalse.bind(this);
         this.setDataModal = this.setDataModal.bind(this);
         this.setModalDetails = this.setModalDetails.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
     }
 
-    componentDidMount() {
-        fetch('https://my-json-server.typicode.com/MrArtur0074/json-server/db')
-            .then((res) => {
-                res.json().then((data) => {
-                    console.log(data.works);
-                    this.setState({
-                        data_work: data.works
-                    })
-                })
+    async componentDidMount() {
+        try {
+            const response = await fetch('http://localhost:4000/db')
+            const json = await response.json();
+            this.setState({
+                data_work: json.works
             })
-            .catch((err) => {
-                console.log(err)
-            })
+        } catch (error) {
+            alert('Ошибка при выгрузке Json данных.');
+        }
     }
 
     public props: IstatesProps = this.props;
     render() {
         if (!this.state.data_work.length) return null;
         let componentsRender = this.state.data_work.map((Component, index) => (
-            <WorkCard key={index} {...[Component, this.setDataModal, index, this.isModalTrue]}/>
+            <WorkCard key={index} {...[Component, this.setDataModal, index, this.isModalTrue, this.deleteItem]}/>
         ));
 
         const requiredItem:number = this.state.requiredItem;
@@ -62,7 +61,7 @@ class AppBodyWork extends React.Component<IAppBodyWorkProps, IAppBodyWork> {
                 {componentsRender}
                 <AddWorkCard {...[this.isModalCreateTrue, this.isModalCreateFalse]}/>
                 <Modal {...[this.state.isModalEdit, this.isModalFalse, modalData, this.setModalDetails]}/>
-                <ModalCreate {...[this.state.isModalCreate, this.isModalCreateFalse]}/>
+                <ModalCreate {...[this.state.isModalCreate, this.isModalCreateFalse, this.addItem]}/>
             </div>
         )
     }
@@ -93,7 +92,33 @@ class AppBodyWork extends React.Component<IAppBodyWorkProps, IAppBodyWork> {
         const requiredItem:number = this.state.requiredItem;
         let data_works:Array<IInfoCard> = this.state.data_work;
         data_works[requiredItem] = item;
-        this.setState({data_work: data_works})
+        this.setState({data_work: data_works});
+    }
+
+    private addItem(item:IInfoCard) {
+        let data_works:Array<IInfoCard> = this.state.data_work;
+        data_works.push(item);
+        this.setState({data_work: data_works});
+    }
+
+    private deleteItem(index:number):void {
+        this.setState({ 
+            requiredItem: index
+        }, async () => {
+            const requiredItem:number = this.state.requiredItem;
+            let data_works:Array<IInfoCard> = this.state.data_work;
+
+            try {
+                const response = await fetch('http://localhost:4000/works/' + (data_works[requiredItem].id), {
+                    method: 'delete'
+                })
+                let json = await response.json();
+                data_works.splice(requiredItem, 1);  
+                this.setState({data_work: data_works, requiredItem: 0});
+            } catch (error) {
+                alert('Произошла ошибка при удалении.')
+            }
+        })  
     }
 }
 

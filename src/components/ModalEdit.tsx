@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './Modal.css';
-import {inputErrors, validate, formateDateString, pickerData} from '../logic/skillData';
-import {changeCard} from '../logic/api'
+import {inputErrors, validate, formateDateString, pickerData, checkError} from '../logic/skillData';
+import {changeCard} from '../logic/api';
+import {initStateModalInfo, initStateModalErrors} from './ModalCreate';
 
 interface IModal {
     0: boolean;
@@ -18,7 +19,7 @@ export interface IInfoCard {
     endDate: string;
 }
 
-interface IModalState {
+export interface IModalState {
     infoCard: IInfoCard,
     errors: inputErrors
 }
@@ -27,28 +28,27 @@ class Modal extends Component<IModal, IModalState> {
     constructor(props:IModal) {
         super(props);
         this.state = {
-            infoCard: {
-                id : '',
-                name: '',
-                title: '',
-                startDate: '',
-                endDate: ''
-            },
-            errors: {
-                name: false,
-                title: false,
-                startDate: false,
-                endDate: false
-            }
+            infoCard: initStateModalInfo,
+            errors: initStateModalErrors
         };
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.saveCard = this.saveCard.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     public props: IModal = this.props;
+
+    private closeModal():void {
+        console.log(initStateModalErrors);
+        this.setState({
+            infoCard: initStateModalInfo,
+            errors: initStateModalErrors
+        });
+        this.props[1]();
+    }
 
     componentDidUpdate(prevProps:IModal) {
         if (prevProps !== this.props)
@@ -68,7 +68,7 @@ class Modal extends Component<IModal, IModalState> {
         return (
             <div id="openModal" className={classModal}>
                 <div>
-                    <a onClick={this.props[1]} title="Закрыть" className="close">X</a>
+                    <a onClick={this.closeModal} title="Закрыть" className="close">X</a>
                     <h2>Редактировать</h2>
                     <form className='card-work'>
                         <label htmlFor='inputName'><span>*</span>Название места:</label>
@@ -122,7 +122,7 @@ class Modal extends Component<IModal, IModalState> {
                         </div>
                         <label 
                         className={(this.state.errors.startDate || this.state.errors.endDate) ? "error-show" : "error-hide"}> 
-                            Даннst поля не должно быть пустыми! 
+                            Данные поля не должны быть пустыми! 
                         </label>
                         <div className='div-button'>
                             <input 
@@ -193,19 +193,13 @@ class Modal extends Component<IModal, IModalState> {
         this.setState({
             errors: errorsForm
         });
-        let error:boolean = false;
-        let key:keyof typeof errorsForm;
-        for (key in errorsForm) {
-            if (errorsForm[key]) error=true;
-        }
-        if (!error) {
+        if (!checkError(errorsForm)) {
             changeCard(work);
             this.props[3](work);
-            this.props[1]();
+            this.closeModal();
         }
         
     }
-
 }
 
 export default Modal

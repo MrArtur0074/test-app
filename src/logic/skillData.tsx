@@ -117,3 +117,12 @@ export function formateDateString(dateString:string, sym:string):string {
     finishDate = (sym === '.')? arr[2] + '-' + arr[1] + '-' + arr[0]: arr[2] + '.' + arr[1] + '.' + arr[0];
     return finishDate;
 }
+
+export function checkError(errorsForm:inputErrors):boolean {
+    let error:boolean = false;
+    let key:keyof typeof errorsForm;
+    for (key in errorsForm) {
+        if (errorsForm[key]) error=true;
+    }
+    return error;
+}

@@ -2,13 +2,13 @@ import React from 'react';
 import {Iwork} from '../logic/skillData';
 import imgEdit from '../img/edit.svg';
 import imgDelete from '../img/delete.svg';
-import {IInfoCard} from './ModalEdit';
 
 interface IWorkCardProps {
     0: Iwork;
     1(number:number): void;
-    2: number;
-    3(): void;
+    2: number; //index card
+    3(): void; //show modal
+    4(number:number): void; //delete card
 }
 
 class WorkCard extends React.Component<IWorkCardProps> {
@@ -16,6 +16,7 @@ class WorkCard extends React.Component<IWorkCardProps> {
     constructor(props:IWorkCardProps) {
         super(props);
         this.dataToModal = this.dataToModal.bind(this);
+        this.delete = this.delete.bind(this);
     }
     render() {
         return (
@@ -28,7 +29,7 @@ class WorkCard extends React.Component<IWorkCardProps> {
                     </div>
                     <div className='work-card-icons'> 
                         <img className='card-icon' src={imgEdit} onClick={this.dataToModal}/>
-                        <img className='card-icon' src={imgDelete}/>
+                        <img className='card-icon' src={imgDelete} onClick={this.delete}/>
                     </div>
                 </div>
             </div>
@@ -38,6 +39,10 @@ class WorkCard extends React.Component<IWorkCardProps> {
     private dataToModal():void {
         this.props[1](this.props[2]);
         this.props[3]();
+    }
+
+    private delete():void {
+        this.props[4](this.props[2]);
     }
 }
 
