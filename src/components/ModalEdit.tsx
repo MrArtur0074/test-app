@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Modal.css';
-import {inputErrors, validate, formateDateString, pickerData} from '../logic/skillData'
+import {inputErrors, validate, formateDateString, pickerData} from '../logic/skillData';
+import {changeCard} from '../logic/api'
 
 interface IModal {
     0: boolean;
@@ -71,18 +72,67 @@ class Modal extends Component<IModal, IModalState> {
                     <h2>Редактировать</h2>
                     <form className='card-work'>
                         <label htmlFor='inputName'><span>*</span>Название места:</label>
-                        <div><input value={this.state.infoCard.name} onChange={this.handleChangeName} name='inputName' type='text'/></div>
+                            <div>
+                                <input 
+                                    className={this.state.errors.name ? "error-modal" : ""} 
+                                    value={this.state.infoCard.name} 
+                                    onChange={this.handleChangeName} 
+                                    name='inputName' 
+                                    type='text'
+                                />
+                                <label 
+                                className={this.state.errors.name ? "error-show" : "error-hide"} > 
+                                    Данное поле не должно быть пустым! 
+                                </label>
+                            </div>
 
                         <label htmlFor='inputTitle'><span>*</span>Описание:</label>
-                        <div><textarea onChange={this.handleChangeTitle} value={this.state.infoCard.title} name='inputTitle'></textarea></div>
+                        <div>
+                            <textarea 
+                                className={this.state.errors.title ? "error-modal" : ""} 
+                                onChange={this.handleChangeTitle} 
+                                value={this.state.infoCard.title} 
+                                name='inputTitle'>
+                            </textarea>
+                            <label 
+                            className={this.state.errors.title ? "error-show" : "error-hide"}> 
+                                Данное поле не должно быть пустым! 
+                            </label>
+                        </div>
 
-                        <div className='div-date'><label htmlFor='inputStartDate'><span>*</span>Дата начала: </label>
-                        <input value={this.state.infoCard.startDate} onChange={this.handleChangeStartDate} name='inputStartDate' type='date'/></div>
-
-                        <div className='div-date'><label htmlFor='inputEndDate'><span>*</span>Дата окончания: </label>
-                        <input value={this.state.infoCard.endDate} onChange={this.handleChangeEndDate} name='inputEndDate' type='date'/></div>
-
-                        <div><input onClick={this.saveCard} name='work-send' type='button' value="Сохранить"/></div>
+                        <div className='div-date'>
+                            <label htmlFor='inputStartDate'><span>*</span>Дата начала: </label>
+                            <input 
+                                className={this.state.errors.startDate ? "error-modal" : ""} 
+                                value={this.state.infoCard.startDate} 
+                                onChange={this.handleChangeStartDate} 
+                                name='inputStartDate' 
+                                type='date'
+                            />
+                        </div>
+                        <div className='div-date'>
+                            <label htmlFor='inputEndDate'><span>*</span>Дата окончания: </label>
+                            <input 
+                                className={this.state.errors.endDate ? "error-modal" : ""} 
+                                value={this.state.infoCard.endDate}
+                                onChange={this.handleChangeEndDate} 
+                                name='inputEndDate' 
+                                type='date'
+                            />
+                        </div>
+                        <label 
+                        className={(this.state.errors.startDate || this.state.errors.endDate) ? "error-show" : "error-hide"}> 
+                            Даннst поля не должно быть пустыми! 
+                        </label>
+                        <div className='div-button'>
+                            <input 
+                                className='modalButton'
+                                onClick={this.saveCard} 
+                                name='work-send' 
+                                type='button' 
+                                value="Сохранить"
+                            />
+                        </div>
                     </form>
                 </div>
             </div>
@@ -139,9 +189,21 @@ class Modal extends Component<IModal, IModalState> {
 
     private saveCard() {
         const work:IInfoCard = pickerData(this.state.infoCard);
-        let error:inputErrors = validate(work);
-        this.props[3](work);
-        this.props[1]();
+        let errorsForm:inputErrors = validate(work);
+        this.setState({
+            errors: errorsForm
+        });
+        let error:boolean = false;
+        let key:keyof typeof errorsForm;
+        for (key in errorsForm) {
+            if (errorsForm[key]) error=true;
+        }
+        if (!error) {
+            changeCard(work);
+            this.props[3](work);
+            this.props[1]();
+        }
+        
     }
 
 }
