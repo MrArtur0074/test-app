@@ -70,7 +70,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "node scripts/start.js",
+    "start": "concurrently --kill-others \"node scripts/start.js\" \"json-server --watch db.json --port 4000\"",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "rest-api": "json-server --watch db.json --port 4000",
