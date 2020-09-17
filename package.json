@@ -1,5 +1,5 @@
 {
-  "homepage": "https://mrartur0074.github.io/test-app",
+  "homepage": "http://mrartur0074.github.io/test-app",
   "name": "test-app",
   "version": "0.1.0",
   "private": true,
@@ -70,7 +70,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "concurrently --kill-others \"node scripts/start.js\" \"json-server --watch db.json --port 4000\"",
+    "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "rest-api": "json-server --watch db.json --port 4000",
